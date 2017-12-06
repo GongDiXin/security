@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gongdixin-security-app" />
+        <module name="gongdixin-security-browser" />
+        <module name="gongdixin-security-core" />
+        <module name="gongdixin-security-demo" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gongdixin-security" target="1.8" />
+      <module name="gongdixin-security-app" target="1.8" />
+      <module name="gongdixin-security-browser" target="1.8" />
+      <module name="gongdixin-security-core" target="1.8" />
+      <module name="gongdixin-security-demo" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

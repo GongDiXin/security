@@ -1,0 +1,2 @@
+1.SpringMVC中如果需要返回字符串，而不是跳转界面该如何操作，再或者返回对象
+2.@Controller和@RestController的区别是否在于申明不同的控制器 一个用于流程控制 一个用于Rest接口服务

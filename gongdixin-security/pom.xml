@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <groupId>com.gongdixin.security</groupId>
+    <artifactId>gongdixin-security</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <properties>
+        <gongdixin.security.version>1.0.0-SNAPSHOT</gongdixin.security.version>
+    </properties>
+
+    <!--spring io 管理平台 管理maven依赖的版本 统一管理各模块间的spring版本-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.spring.platform</groupId>
+                <artifactId>platform-bom</artifactId>
+                <version>Brussels-SR4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Dalston.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--在当前模块执行maven命令 会对包含的另外四个模块生效-->
+    <modules>
+        <module>../gongdixin-security-app</module>
+        <module>../gongdixin-security-browser</module>
+        <module>../gongdixin-security-core</module>
+        <module>../gongdixin-security-demo</module>
+    </modules>
+
+</project>
