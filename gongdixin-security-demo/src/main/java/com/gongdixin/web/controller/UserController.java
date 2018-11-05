@@ -6,8 +6,6 @@ import com.gongdixin.dto.UserQueryCondition;
 import com.gongdixin.exception.UserNotExistException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.catalina.Service;
-import org.apache.catalina.core.StandardService;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.domain.Pageable;
