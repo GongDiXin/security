@@ -1,0 +1,46 @@
+1.BasicErrorController 是SpringBoot针对错误返回码提供的处理
+  针对网页和app访问提供不同处理
+  提供404，500界面可以对网页访问做统一跳转，但是app访问的话还是放回json串
+  配置404等界面时要注意路径，如下所示要放在error文件夹中
+  @RequestMapping(produces = "text/html")
+  	public ModelAndView errorHtml(HttpServletRequest request,
+  			HttpServletResponse response) {
+  		HttpStatus status = getStatus(request);
+  		Map<String, Object> model = Collections.unmodifiableMap(getErrorAttributes(
+  				request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));
+  		response.setStatus(status.value());
+  		ModelAndView modelAndView = resolveErrorView(request, response, status, model);
+  		return (modelAndView == null ? new ModelAndView("error", model) : modelAndView);
+  	}
+
+2.参考com/gongdixin/web/controller/ControllerExceptionHandler.java 注意该类的注解
+  @ExceptionHandler表示用于处理哪种异常抛出 程序任何方法抛出这种异常都会被捕获并进入该处理方法
+  @ResponseBody表示将返回的数据以Json格式返回
+  @ResponseStatus指定返回的状态码
+
+3.让过滤器生效的话只需要将过滤器加上@Component即可
+  也可以在WebConfig(Spring配置类)配置类中进行类的实例化
+  参考com/gongdixin/web/config/WebConfig.java.timeFilter
+
+4.Filter无法获取当前过滤执行的方法
+  Intercepter支持获取Spring框架过滤的方法
+
+5.过滤器 拦截器 切片 执行顺序
+    过滤器 -> 拦截器-> 切片
+  当抛出异常时捕获顺序
+    过滤器 -> 声明了@ControllerAdvice注解的异常处理类 -> 拦截器-> 切片
+
+6.DeferredResultHolder(Spring自带组件)区别于Callable接口
+  用于在两个线程间传递数据
+  参考课程3-10
+
+7.生成8位随机数
+  RandomStringUtils.randomNumeric(8)
+
+8.implements ApplicationListener<ContextRefreshedEvent>
+  继承该接口则代表当系统启动完毕之后开始监听
+
+9.使用拦截器拦截异步请求的话要配置configureAsyncSupport
+  参考com/gongdixin/web/config/WebConfig.java.configureAsyncSupport
+
+10.StringUtils.join 可以把带格式(就是换行、空格这些)的字符串文档拼接成字符串 处理换行的话是加一个参数 "/n"

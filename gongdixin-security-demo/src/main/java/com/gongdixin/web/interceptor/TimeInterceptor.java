@@ -18,31 +18,32 @@ import java.util.Date;
 @Component
 public class TimeInterceptor implements HandlerInterceptor{
 
-    //控制器方法执行前调用
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 控制器方法执行前调用
         System.out.println("preHandle");
         //handler 请求的控制器
         System.out.println(((HandlerMethod)handler).getBean().getClass().getName());
         System.out.println(((HandlerMethod)handler).getMethod().getName());
-        request.setAttribute("startTime",new Date().getTime());
+        request.setAttribute("startTime", System.currentTimeMillis());
         return true;
     }
 
-    //preHandle方法执行完以后调用postHandle 如果控制器抛出异常 则不会调用postHandle
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // preHandle方法执行完以后调用postHandle 如果控制器抛出异常 则不会调用postHandle
         System.out.println("postHandle");
         Long start = (Long) request.getAttribute("startTime");
-        System.out.println("time interceptor 耗时:"+(new Date().getTime() - start));
+        System.out.println("time interceptor 耗时:"+(System.currentTimeMillis() - start));
     }
 
-    //无论是否有异常 都会执行afterCompletion
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // 无论是否有异常 都会执行afterCompletion
         System.out.println("afterCompletion");
         Long start = (Long) request.getAttribute("startTime");
-        System.out.println("time interceptor 耗时:"+(new Date().getTime() - start));
+        System.out.println("time interceptor 耗时:"+(System.currentTimeMillis() - start));
         System.out.println("ex is" + ex);
     }
 }

@@ -22,9 +22,10 @@ public class TimeFilter implements Filter{
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         System.out.println("TimeFilter start");
-        long start = new Date().getTime();
+        long start = System.currentTimeMillis();
+        // 请求过滤器链 请求下一个过滤器
         chain.doFilter(request,response);
-        System.out.println("do filter 耗时:"+(new Date().getTime() - start));
+        System.out.println("do filter 耗时:"+(System.currentTimeMillis() - start));
         System.out.println("TimeFilter stop");
     }
 

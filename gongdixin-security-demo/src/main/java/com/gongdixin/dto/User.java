@@ -22,8 +22,8 @@ public class User {
         2.在值对象的get方法上指定视图
         3.在Controller方法上制定视图
     */
-    public interface UserSimpleView{};
-    public interface UserDetailView extends UserSimpleView{};
+    public interface UserSimpleView{}
+    public interface UserDetailView extends UserSimpleView{}
 
     private String id;
     @MyConstraint(message = "测试自定义注解")

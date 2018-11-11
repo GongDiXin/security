@@ -22,9 +22,11 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(UserNotExistException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    /*@ExceptionHandler表示用于处理哪种异常抛出 程序任何方法抛出这种异常都会被捕获并进入该处理方法
-    @ResponseBody表示将返回的数据以Json格式返回
-    @ResponseStatus指定返回的状态码*/
+    /**
+     @ExceptionHandler表示用于处理哪种异常抛出 程序任何方法抛出这种异常都会被捕获并进入该处理方法
+     @ResponseBody表示将返回的数据以Json格式返回
+     @ResponseStatus指定返回的状态码
+     */
     public Map<String,Object> handlerUserNotExistException(UserNotExistException ex){
         Map<String,Object> result = new HashMap<>();
         result.put("id",ex.getId());
