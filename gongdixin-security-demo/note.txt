@@ -44,3 +44,11 @@
   参考com/gongdixin/web/config/WebConfig.java.configureAsyncSupport
 
 10.StringUtils.join 可以把带格式(就是换行、空格这些)的字符串文档拼接成字符串 处理换行的话是加一个参数 "/n"
+
+11.启动properties配置类注意注解
+   参照com/gongdixin/core/properties/SecurityProperties.java
+   并且添加Maven配置
+   <dependency>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-configuration-processor</artifactId>
+   </dependency>
