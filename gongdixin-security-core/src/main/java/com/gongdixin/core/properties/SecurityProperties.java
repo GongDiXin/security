@@ -12,13 +12,13 @@ public class SecurityProperties {
     /**
      * 这里需要初始化，Spring Boot没有做注入
      */
-    private BrowserProperties browserProperties = new BrowserProperties();
+    private BrowserProperties browser = new BrowserProperties();
 
-    public BrowserProperties getBrowserProperties() {
-        return browserProperties;
+    public BrowserProperties getBrowser() {
+        return browser;
     }
 
-    public void setBrowserProperties(BrowserProperties browserProperties) {
-        this.browserProperties = browserProperties;
+    public void setBrowser(BrowserProperties browser) {
+        this.browser = browser;
     }
 }
