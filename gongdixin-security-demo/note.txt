@@ -52,3 +52,24 @@
        <groupId>org.springframework.boot</groupId>
        <artifactId>spring-boot-configuration-processor</artifactId>
    </dependency>
+
+12. UserController.getCurrentUser的三种写法
+    12-1
+    @GetMapping("/getCurrentUser")
+    public Object getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    12-2 Spring会自己帮我们把authentication传进来
+    @GetMapping("/getCurrentUser")
+    public Object getCurrentUser(Authentication authentication) {
+        return authentication;
+    }
+
+    12-3 使用@AuthenticationPrincipal注解 只返回用户信息
+    @GetMapping("/getCurrentUser")
+    public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails;
+    }
+
+13. Spring自带的request参数获取工具 ServletRequestUtils.getStringParameter

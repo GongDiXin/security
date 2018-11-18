@@ -39,6 +39,11 @@ public class BrowserSecurityController {
     private SecurityProperties securityProperties;
 
     /**
+     * 这里可以做成可配置的
+     */
+    private final String SUFFIX_HTML = ".html";
+
+    /**
      * 当需要身份认证的时候跳转到这里
      *
      * @author GongDiXin
@@ -53,7 +58,7 @@ public class BrowserSecurityController {
         if (savedRequest != null) {
             String target = savedRequest.getRedirectUrl();
             logger.info("引发跳转的请求路径是：" + target);
-            if (StringUtils.endsWithIgnoreCase(target, ".html")) {
+            if (StringUtils.endsWithIgnoreCase(target, SUFFIX_HTML)) {
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
             }
         }
