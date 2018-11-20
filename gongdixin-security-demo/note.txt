@@ -79,3 +79,5 @@
 15. 熟悉Generator模式的代码设计方法
     可以参考ValidateCodeBeanConfig.java ValidateCodeGenerator.java ImageCodeGenerator.java DemoValidateCodeGenerator.java
     以增量的方式适应变化 而不是每次都去修改代码 而是以新的替换旧的
+
+16. BrowserSecurityConfig.persistentTokenRepository() 该方法一定要加@Bean注解 原因研究中

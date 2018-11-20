@@ -46,6 +46,16 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * 配置数据源和token仓库
+     * 注意：@Bean注解一定要加
+     *
+     * @author GongDiXin
+     * @date 2018/11/20 23:50
+     * @param
+     * @return
+     * @exception
+    */
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
