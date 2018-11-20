@@ -73,3 +73,9 @@
     }
 
 13. Spring自带的request参数获取工具 ServletRequestUtils.getStringParameter
+
+14. AntPathMatcher Spring工具类，路径匹配 带通配符的也可以
+
+15. 熟悉Generator模式的代码设计方法
+    可以参考ValidateCodeBeanConfig.java ValidateCodeGenerator.java ImageCodeGenerator.java DemoValidateCodeGenerator.java
+    以增量的方式适应变化 而不是每次都去修改代码 而是以新的替换旧的

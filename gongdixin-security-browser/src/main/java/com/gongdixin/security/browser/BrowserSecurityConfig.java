@@ -39,6 +39,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ValidateCodeFilter filter = new ValidateCodeFilter();
         filter.setAuthenticationFailureHandler(securityAuthenticationFailureHandler);
+        filter.setSecurityProperties(securityProperties);
+        filter.afterPropertiesSet();
 
         // 表单登录 也可以这只成HttpBasic登录
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class).
