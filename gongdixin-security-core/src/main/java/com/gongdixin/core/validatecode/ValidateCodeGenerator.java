@@ -14,9 +14,8 @@ public interface ValidateCodeGenerator {
      *
      * @author GongDiXin
      * @date 2018/11/20 22:12
-     * @param
+     * @param request
      * @return
-     * @exception
     */
-    ImageCode generate(ServletWebRequest request);
+    ValidateCode generate(ServletWebRequest request);
 }
