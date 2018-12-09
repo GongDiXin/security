@@ -20,7 +20,7 @@ import java.io.IOException;
  * @version 1.0
  * @created 2018/11/17 17:58
  */
-@Component
+@Component("securityAuthenticationSuccessHandler")
 public class SecurityAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());

@@ -3,6 +3,8 @@ package com.gongdixin.core.validatecode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
+ * 实现此接口的类命名需按CodeGenerator结尾
+ *
  * @author GongDiXin
  * @version 1.0
  * @created 2018/11/20 22:11

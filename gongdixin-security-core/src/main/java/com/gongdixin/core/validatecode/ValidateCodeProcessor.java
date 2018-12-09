@@ -4,17 +4,13 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 /**
  * 验证码处理
+ * 实现此接口的类命名需按ValidateCodeProcessor结尾
  *
  * @author GongDiXin
  * @version 1.0
  * @created 2018/11/22 22:43
  */
 public interface ValidateCodeProcessor {
-
-    /**
-     * 验证码放入session的前缀
-     */
-    String SESSION_KEY_PREFIX = "SESSION_KEY_FOR_CODE_";
 
     /**
      * 创建验证码
@@ -24,6 +20,14 @@ public interface ValidateCodeProcessor {
      * @param request
      * @exception Exception
     */
-    void createValidateCode(ServletWebRequest request) throws Exception;
+    void create(ServletWebRequest request) throws Exception;
+
+    /**
+     * 校验验证码
+     *
+     * @param servletWebRequest
+     * @throws Exception
+     */
+    void validate(ServletWebRequest servletWebRequest);
 
 }

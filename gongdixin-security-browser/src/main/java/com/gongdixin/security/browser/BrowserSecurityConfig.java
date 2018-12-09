@@ -1,18 +1,17 @@
 package com.gongdixin.security.browser;
 
+import com.gongdixin.core.authentication.AbstractChannelSecurityConfig;
+import com.gongdixin.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.gongdixin.core.properties.SecurityConstants;
 import com.gongdixin.core.properties.SecurityProperties;
-import com.gongdixin.core.validatecode.ValidateCodeFilter;
-import com.gongdixin.security.browser.authentication.SecurityAuthenticationFailureHandler;
-import com.gongdixin.security.browser.authentication.SecurityAuthenticationSuccessHandler;
+import com.gongdixin.core.validatecode.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -24,16 +23,10 @@ import javax.sql.DataSource;
  * @created 2018/11/7 21:53
  */
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-    @Autowired
-    private SecurityAuthenticationSuccessHandler securityAuthenticationSuccessHandler;
-
-    @Autowired
-    private SecurityAuthenticationFailureHandler securityAuthenticationFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,6 +38,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
     /**
      * 配置数据源和token仓库
@@ -68,30 +67,25 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ValidateCodeFilter filter = new ValidateCodeFilter();
-        filter.setAuthenticationFailureHandler(securityAuthenticationFailureHandler);
-        filter.setSecurityProperties(securityProperties);
-        filter.afterPropertiesSet();
 
-        // 表单登录 也可以这只成HttpBasic登录
-        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class).
-            formLogin()
-                // 登录界面
-                .loginPage("/authentication/require")
-                // authentication/form这个表单提交的地址是固定的
-                .loginProcessingUrl("/authentication/form")
-                .successHandler(securityAuthenticationSuccessHandler)
-                .failureHandler(securityAuthenticationFailureHandler)
-                .and()
+        applyPasswordAuthenticationConfig(http);
+
+        // 表单登录 也可以设置成HttpBasic登录
+        http.apply(validateCodeSecurityConfig).
+                and().
+            apply(smsCodeAuthenticationSecurityConfig).
+                and()
             .rememberMe().tokenRepository(persistentTokenRepository())
-            .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-            .userDetailsService(userDetailsService).and()
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .userDetailsService(userDetailsService)
+                .and()
             // 授权
             .authorizeRequests()
             // 这个地方写文件的相对路径还不行
-            .antMatchers("/authentication/require",
-                    "/code/image",
-                    securityProperties.getBrowser().getLoginPage()).permitAll()
+            .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
+                        securityProperties.getBrowser().getLoginPage())
+                        .permitAll()
             // 针对任何请求
             .anyRequest()
             // 认证 你是谁

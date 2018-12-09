@@ -22,7 +22,7 @@ import java.io.IOException;
  * @version 1.0
  * @created 2018/11/18 11:10
  */
-@Component
+@Component("securityAuthenticationFailureHandler")
 public class SecurityAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());

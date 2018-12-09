@@ -1,19 +1,15 @@
 package com.gongdixin.core.validatecode;
 
-import com.gongdixin.core.validatecode.sms.SmsCodeSender;
+import com.gongdixin.core.properties.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.web.HttpSessionSessionStrategy;
-import org.springframework.social.connect.web.SessionStrategy;
-import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author GongDiXin
@@ -23,48 +19,18 @@ import java.io.IOException;
 @RestController
 public class ValidateCodeController {
 
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
-
-    public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
-
     @Autowired
-    private ValidateCodeGenerator imageCodeGenerator;
-
-    @Autowired
-    private ValidateCodeGenerator smsCodeGenerator;
-
-    @Autowired
-    private SmsCodeSender smsCodeSender;
+    private Map<String, ValidateCodeProcessor> validateCodeProcessorHolder;
 
     /**
-     * 获取图片验证码
+     * 创建验证码，根据验证码类型不同，调用不同的 {@link ValidateCodeProcessor}接口实现
      *
      * @author GongDiXin
      * @date 2018/11/18 20:56
      * @param
     */
-    @RequestMapping("/code/image")
-    public void createImageCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ImageCode imageCode = (ImageCode)imageCodeGenerator.generate(new ServletWebRequest(request));
-        // 将验证码放入session中
-        sessionStrategy.setAttribute(new ServletRequestAttributes(request), SESSION_KEY, imageCode);
-        // 将图片写到浏览器
-        ImageIO.write(imageCode.getImage(), "JPEG" ,response.getOutputStream());
-    }
-
-    /**
-     * 短信验证码
-     *
-     * @author GongDiXin
-     * @date 2018/11/18 20:56
-     * @param
-     */
-    @RequestMapping("/code/sms")
-    public void createSmsCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ValidateCode smsCode = smsCodeGenerator.generate(new ServletWebRequest(request));
-        // 将验证码放入session中
-        sessionStrategy.setAttribute(new ServletRequestAttributes(request), SESSION_KEY, smsCode);
-        String mobileNum = ServletRequestUtils.getRequiredStringParameter(request, "mobileNum");
-        smsCodeSender.send(mobileNum, smsCode.getCode());
+    @RequestMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
+    public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type) throws Exception {
+        validateCodeProcessorHolder.get(type + ValidateCodeProcessor.class.getSimpleName()).create(new ServletWebRequest(request, response));
     }
 }

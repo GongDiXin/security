@@ -1,8 +1,7 @@
 package com.gongdixin.code;
 
-import com.gongdixin.core.validatecode.ImageCode;
+import com.gongdixin.core.validatecode.image.ImageCode;
 import com.gongdixin.core.validatecode.ValidateCodeGenerator;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**

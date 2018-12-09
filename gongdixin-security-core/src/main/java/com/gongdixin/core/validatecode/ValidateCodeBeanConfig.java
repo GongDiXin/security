@@ -1,5 +1,6 @@
 package com.gongdixin.core.validatecode;
 
+import com.gongdixin.core.validatecode.image.ImageCodeGenerator;
 import com.gongdixin.core.validatecode.sms.DefaultSmsCodeSender;
 import com.gongdixin.core.validatecode.sms.SmsCodeSender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,14 +16,13 @@ import org.springframework.context.annotation.Configuration;
 public class ValidateCodeBeanConfig {
 
     @Bean
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")
     public ValidateCodeGenerator imageCodeGenerator() {
         return new ImageCodeGenerator();
     }
 
     @Bean
     @ConditionalOnMissingBean(SmsCodeSender.class)
-    public SmsCodeSender smsCodeGenerator() {
+    public SmsCodeSender smsCodeSender() {
         return new DefaultSmsCodeSender();
     }
 }

@@ -1,5 +1,6 @@
 package com.gongdixin.security.browser;
 
+import com.gongdixin.core.properties.SecurityConstants;
 import com.gongdixin.core.properties.SecurityProperties;
 import com.gongdixin.security.browser.support.SimpleResponse;
 import org.apache.commons.lang.StringUtils;
@@ -39,11 +40,6 @@ public class BrowserSecurityController {
     private SecurityProperties securityProperties;
 
     /**
-     * 这里可以做成可配置的
-     */
-    private final String SUFFIX_HTML = ".html";
-
-    /**
      * 当需要身份认证的时候跳转到这里
      *
      * @author GongDiXin
@@ -52,13 +48,13 @@ public class BrowserSecurityController {
      * @return
      * @exception
     */
-    @RequestMapping("/authentication/require")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
     public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
             String target = savedRequest.getRedirectUrl();
             logger.info("引发跳转的请求路径是：" + target);
-            if (StringUtils.endsWithIgnoreCase(target, SUFFIX_HTML)) {
+            if (StringUtils.endsWithIgnoreCase(target, SecurityConstants.SUFFIX_HTML)) {
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
             }
         }

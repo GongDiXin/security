@@ -1,3 +1,4 @@
+开发笔记：
 1.BasicErrorController 是SpringBoot针对错误返回码提供的处理
   针对网页和app访问提供不同处理
   提供404，500界面可以对网页访问做统一跳转，但是app访问的话还是放回json串
@@ -81,3 +82,15 @@
     以增量的方式适应变化 而不是每次都去修改代码 而是以新的替换旧的
 
 16. BrowserSecurityConfig.persistentTokenRepository() 该方法一定要加@Bean注解 原因研究中
+17. ServletWebRequest Spring工具类 封装请求和响应
+18. 特别注意：
+    18-1：在@Configuration配置类中 有@Bean注解标注的用于注入类的方法名一定不要写错，如果你的方法名跟某个@Component的默认class名字重复的话 会导致该类无法加载
+          除非用@Component将该类的加载名称修改和上述方法名不一致才能加载。
+
+待完善代码：
+1. com/gongdixin/core/validatecode/ValidateCodeController.java.createCode
+   与
+   com/gongdixin/core/validatecode/AbstractValidateCodeProcessor.java.getValidateCodeType
+   中关于请求类型的获取优化
+   注意：@Component("XXX") 与 Class.class.getSimpleName()的区别
+   前者用于Spring管理bean 而 getSimpleName()则是获取类的简写名称 两者没有关联

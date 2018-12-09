@@ -7,7 +7,7 @@ package com.gongdixin.core.properties;
  */
 public class BrowserProperties {
 
-    private String loginPage = "/signIn_default.html";
+    private String loginPage = SecurityConstants.DEFAULT_SIGN_IN_PAGE_URL;
 
     private LoginType loginType = LoginType.JSON;
 

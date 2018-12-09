@@ -1,4 +1,6 @@
-package com.gongdixin.core.validatecode;
+package com.gongdixin.core.validatecode.image;
+
+import com.gongdixin.core.validatecode.ValidateCode;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
