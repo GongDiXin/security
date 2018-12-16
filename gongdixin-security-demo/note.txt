@@ -1,3 +1,10 @@
+特别注意事项(写在最前面):
+1. 当父类有多个子类继承的时候 如何发现覆写的内容没有按预期的实现 那么极有可能是你的子类加载顺序有点问题 使用@Order确保加载顺序
+   参考
+   com/gongdixin/core/authentication/social/SocialConfig.java
+   com/gongdixin/core/authentication/social/qq/config/QQAutoConfig.java
+   这两个类由于一个没有覆写父类方法 一个覆写了 但是加载顺序有先后 最后导致覆写的方法没有运行
+
 开发笔记：
 1.BasicErrorController 是SpringBoot针对错误返回码提供的处理
   针对网页和app访问提供不同处理
@@ -87,6 +94,20 @@
     18-1：在@Configuration配置类中 有@Bean注解标注的用于注入类的方法名一定不要写错，如果你的方法名跟某个@Component的默认class名字重复的话 会导致该类无法加载
           除非用@Component将该类的加载名称修改和上述方法名不一致才能加载。
 
+19. 参考项目里的Spring Social架构图.png图来看
+    认证服务器 资源服务器 QAuth协议的执行流程 拿令牌拿授权码这些
+    Api 用于获取用户信息接口
+    connection 封装前几步获取的信息
+    connectionFactory 创建connection
+    connectionFactory 封装服务提供商provider
+    ApiAdapter 适配不同provider返回的数据
+
+20. 问题：为什么填回调域为什么要改本地host呢？ 是qq回调访问本机，但是本机没有公网ip需要做公网映射才行，这样的话qq是访问不到本地的？
+    原因：qq的回调并不是新发起一个请求，只是把你发过去的请求forward，就是直接改了你浏览器里的地址，你的浏览器地址改了，首先会从你本地的host解析
+
+21. index主页设置
+    如果Demo项目配置了index页面 那么会去替换掉默认的主页
+
 待完善代码：
 1. com/gongdixin/core/validatecode/ValidateCodeController.java.createCode
    与
@@ -94,3 +115,5 @@
    中关于请求类型的获取优化
    注意：@Component("XXX") 与 Class.class.getSimpleName()的区别
    前者用于Spring管理bean 而 getSimpleName()则是获取类的简写名称 两者没有关联
+
+2. 登录页增加已登录用户信息自动填充功能

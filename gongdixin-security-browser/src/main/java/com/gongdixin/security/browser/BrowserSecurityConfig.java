@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -45,6 +46,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SpringSocialConfigurer socialSecurityConfig;
+
     /**
      * 配置数据源和token仓库
      * 注意：@Bean注解一定要加
@@ -74,8 +78,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         http.apply(validateCodeSecurityConfig).
                 and().
             apply(smsCodeAuthenticationSecurityConfig).
-                and()
-            .rememberMe().tokenRepository(persistentTokenRepository())
+                and().
+            apply(socialSecurityConfig).
+                and().
+            rememberMe().tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
                 .and()
@@ -84,7 +90,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
             // 这个地方写文件的相对路径还不行
             .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        securityProperties.getBrowser().getLoginPage())
+                        securityProperties.getBrowser().getSignUpUrl(),
+                        securityProperties.getBrowser().getLoginPage(),
+                        "/user/register")
                         .permitAll()
             // 针对任何请求
             .anyRequest()

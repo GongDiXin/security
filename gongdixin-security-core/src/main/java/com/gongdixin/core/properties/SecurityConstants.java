@@ -34,6 +34,11 @@ public interface SecurityConstants {
 	 * 默认登录页面
 	 */
 	String DEFAULT_SIGN_IN_PAGE_URL = "/signIn_default.html";
+
+	/**
+	 * 默认注册页面
+	 */
+	String DEFAULT_SIGN_UP_PAGE_URL = "/signUp_default.html";
 	/**
 	 * 验证图片验证码时，http请求中默认的携带图片验证码信息的参数的名称
 	 */

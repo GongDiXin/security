@@ -8,16 +8,20 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
+
+    @PostMapping("/register")
+    public void register(User user, HttpServletRequest request) {
+        // 不管是注册用户还是绑定用户都会创建业务系统的用户唯一标志
+        String userId = user.getUsername();
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+    }
 
     /**
      * 获取当前登录用户信息
@@ -86,7 +100,7 @@ public class UserController {
      * @throws
     */
 
-    /*
+    /**
         通过JsonView来控制返回的数据 既返回不同的json串 对不同的查询做出返回区分 界面拿到的json串也就不同
         通过@GetMapping替换@RequestMapping(value = "/user/{id:\\d+}",method = RequestMethod.GET)
     */
@@ -109,9 +123,6 @@ public class UserController {
     */
     @PostMapping
     public User createUser(@Valid @RequestBody User user){
-        /*if(errors.hasErrors()){
-            errors.getAllErrors().stream().forEach(error -> System.out.println(error.getDefaultMessage()));
-        }*/
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
         System.out.println(user.getId());

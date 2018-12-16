@@ -7,6 +7,8 @@ package com.gongdixin.core.properties;
  */
 public class BrowserProperties {
 
+    private String signUpUrl = SecurityConstants.DEFAULT_SIGN_UP_PAGE_URL;
+
     private String loginPage = SecurityConstants.DEFAULT_SIGN_IN_PAGE_URL;
 
     private LoginType loginType = LoginType.JSON;
@@ -38,5 +40,13 @@ public class BrowserProperties {
 
     public void setRememberMeSeconds(int rememberMeSeconds) {
         this.rememberMeSeconds = rememberMeSeconds;
+    }
+
+    public String getSignUpUrl() {
+        return signUpUrl;
+    }
+
+    public void setSignUpUrl(String signUpUrl) {
+        this.signUpUrl = signUpUrl;
     }
 }
