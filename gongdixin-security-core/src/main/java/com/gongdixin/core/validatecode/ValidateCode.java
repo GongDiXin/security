@@ -1,5 +1,6 @@
 package com.gongdixin.core.validatecode;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * @version 1.0
  * @created 2018/11/22 21:44
  */
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
     private String code;
 

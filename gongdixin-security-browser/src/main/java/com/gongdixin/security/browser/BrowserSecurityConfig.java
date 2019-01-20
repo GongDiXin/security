@@ -6,14 +6,18 @@ import com.gongdixin.core.properties.SecurityConstants;
 import com.gongdixin.core.properties.SecurityProperties;
 import com.gongdixin.core.validatecode.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -38,6 +42,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    @Qualifier("dataSource")
     private DataSource dataSource;
 
     @Autowired
@@ -48,6 +53,15 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SpringSocialConfigurer socialSecurityConfig;
+
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
+
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
 
     /**
      * 配置数据源和token仓库
@@ -85,6 +99,20 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
                 .and()
+                .sessionManagement()
+                .invalidSessionStrategy(invalidSessionStrategy)
+                // 允许最大同时存在的session数量
+                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                // 超过session最大限制时是否允许登录
+                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                .and()
+                .and()
+            .logout()
+                .logoutUrl("/signOut")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .and()
             // 授权
             .authorizeRequests()
             // 这个地方写文件的相对路径还不行
@@ -93,7 +121,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         securityProperties.getBrowser().getSignUpUrl(),
                         securityProperties.getBrowser().getLoginPage(),
                         "/user/register",
-                        "/social/user")
+                        SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL,
+                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+                        securityProperties.getBrowser().getSignOutUrl())
                         .permitAll()
             // 针对任何请求
             .anyRequest()

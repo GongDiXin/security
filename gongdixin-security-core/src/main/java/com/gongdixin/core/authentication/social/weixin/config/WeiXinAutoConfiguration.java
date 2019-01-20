@@ -1,13 +1,17 @@
 package com.gongdixin.core.authentication.social.weixin.config;
 
+import com.gongdixin.core.authentication.social.view.ConnectView;
 import com.gongdixin.core.authentication.social.weixin.connect.WeiXinConnectionFactory;
 import com.gongdixin.core.properties.SecurityProperties;
 import com.gongdixin.core.properties.WeiXinProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.web.servlet.View;
 
 /**
  * 微信登录配置
@@ -28,6 +32,12 @@ public class WeiXinAutoConfiguration extends SocialAutoConfigurerAdapter {
 		WeiXinProperties weixinConfig = securityProperties.getSocial().getWeixin();
 		return new WeiXinConnectionFactory(weixinConfig.getProviderId(), weixinConfig.getAppId(),
 				weixinConfig.getAppSecret());
+	}
+
+	@Bean({"connect/weixinConnect", "connect/weixinConnected"})
+	@ConditionalOnMissingBean(name = "weixinConnectedView")
+	public View weixinConnectedView() {
+		return new ConnectView();
 	}
 	
 }

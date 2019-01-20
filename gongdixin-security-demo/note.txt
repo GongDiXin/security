@@ -5,6 +5,13 @@
    com/gongdixin/core/authentication/social/qq/config/QQAutoConfig.java
    这两个类由于一个没有覆写父类方法 一个覆写了 但是加载顺序有先后 最后导致覆写的方法没有运行
 
+2. 登录成功后会将用户信息(userDetails)放入session中
+
+3. 统一session管里 redis服务 需要maven依赖org.springframework.session
+   配置文件中增加项spring.session.store-type = redis
+   可设置redis端口 地址等
+   其余配置不用修改 如session过期时间 最大登录数等
+
 开发笔记：
 1.BasicErrorController 是SpringBoot针对错误返回码提供的处理
   针对网页和app访问提供不同处理
@@ -117,3 +124,5 @@
    前者用于Spring管理bean 而 getSimpleName()则是获取类的简写名称 两者没有关联
 
 2. 登录页增加已登录用户信息自动填充功能
+
+3. 目前系统在微信登录并注册信息后 需再次登录系统才可以访问

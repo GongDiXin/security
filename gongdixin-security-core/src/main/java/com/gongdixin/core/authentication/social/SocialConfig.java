@@ -2,6 +2,7 @@ package com.gongdixin.core.authentication.social;
 
 import com.gongdixin.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -28,6 +29,7 @@ import javax.sql.DataSource;
 public class SocialConfig extends SocialConfigurerAdapter {
 
     @Autowired
+    @Qualifier("dataSource")
     private DataSource dataSource;
 
     @Autowired

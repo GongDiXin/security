@@ -74,7 +74,8 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @exception
     */
     private void save(ServletWebRequest request, C validateCode) {
-        sessionStrategy.setAttribute(request, getSessionKey(request).toUpperCase(), validateCode);
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        sessionStrategy.setAttribute(request, getSessionKey(request).toUpperCase(), code);
     }
 
     /**
@@ -121,7 +122,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
         ValidateCode codeInSession = null;
         String key;
         if (SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_IMAGE.equals(validateCodeType.getParamNameOnValidate())) {
-            codeInSession  = (ImageCode) sessionStrategy.getAttribute(request, SecurityConstants.SESSION_KEY_FOR_CODE_IMAGE);
+            codeInSession  = (ValidateCode) sessionStrategy.getAttribute(request, SecurityConstants.SESSION_KEY_FOR_CODE_IMAGE);
             key = SecurityConstants.SESSION_KEY_FOR_CODE_IMAGE;
         } else if (SecurityConstants.DEFAULT_PARAMETER_NAME_CODE_SMS.equals(validateCodeType.getParamNameOnValidate())) {
             codeInSession  = (ValidateCode) sessionStrategy.getAttribute(request, SecurityConstants.SESSION_KEY_FOR_CODE_SMS);

@@ -61,8 +61,9 @@ public interface SecurityConstants {
 	String DEFAULT_PARAMETER_NAME_PROVIDERID = "providerId";
 	/**
 	 * session失效默认的跳转地址
+	 * 可在配置文件中配置为一个请求地址/session/invalid 响应json格式
 	 */
-	String DEFAULT_SESSION_INVALID_URL = "/imooc-session-invalid.html";
+	String DEFAULT_SESSION_INVALID_URL = "/session-invalid.html";
 	/**
 	 * 获取第三方用户信息的url
 	 */
