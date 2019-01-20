@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * 校验码相关安全配置
  * 
- * @author zhailiang
+ * @author Gongdixin
  *
  */
 @Component("validateCodeSecurityConfig")

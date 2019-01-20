@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 /**
  * 校验码处理器管理器
  * 
- * @author zhailiang
+ * @author Gongdixin
  *
  */
 @Component

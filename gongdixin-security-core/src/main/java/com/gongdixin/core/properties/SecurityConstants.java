@@ -4,7 +4,7 @@
 package com.gongdixin.core.properties;
 
 /**
- * @author zhailiang
+ * @author Gongdixin
  *
  */
 public interface SecurityConstants {

@@ -1,5 +1,6 @@
 package com.gongdixin.security.browser;
 
+import com.alibaba.fastjson.JSON;
 import com.gongdixin.core.properties.SecurityConstants;
 import com.gongdixin.core.properties.SecurityProperties;
 import com.gongdixin.security.browser.support.SimpleResponse;
@@ -16,10 +17,7 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +60,8 @@ public class BrowserSecurityController {
         if (savedRequest != null) {
             String target = savedRequest.getRedirectUrl();
             logger.info("引发跳转的请求路径是：" + target);
-            if (StringUtils.endsWithIgnoreCase(target, SecurityConstants.SUFFIX_HTML)) {
+            if (StringUtils.endsWithIgnoreCase(target, SecurityConstants.SUFFIX_HTML) ||
+                    StringUtils.endsWithIgnoreCase(target, "js")) {
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
             }
         }
@@ -70,13 +69,15 @@ public class BrowserSecurityController {
     }
 
     @GetMapping("/social/user")
-    public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
+    @ResponseBody
+    public Object getSocialUserInfo(HttpServletRequest request, HttpServletResponse response) {
         SocialUserInfo socialUserInfo = new SocialUserInfo();
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
         socialUserInfo.setProviderId(connection.getKey().getProviderId());
         socialUserInfo.setProviderUserId(connection.getKey().getProviderUserId());
         socialUserInfo.setNickname(connection.getDisplayName());
         socialUserInfo.setHeadImg(connection.getImageUrl());
-        return socialUserInfo;
+        response.setContentType("application/json");
+        return JSON.toJSON(socialUserInfo);
     }
 }

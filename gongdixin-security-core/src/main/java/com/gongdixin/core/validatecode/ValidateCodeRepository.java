@@ -8,7 +8,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 /**
  * 校验码存取器
  * 
- * @author zhailiang
+ * @author Gongdixin
  *
  */
 public interface ValidateCodeRepository {

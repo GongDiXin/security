@@ -7,5 +7,11 @@ package com.gongdixin.core.authentication.social.qq.api;
  */
 public interface QQ {
 
+    /**
+     * 获取QQ用户信息
+     *
+     * @author GongDiXin
+     * @date 2019/1/20 13:25
+    */
     QQUserInfo getQQUserInfo();
 }

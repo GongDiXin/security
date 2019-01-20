@@ -10,7 +10,7 @@ import com.gongdixin.core.properties.SecurityConstants;
  * 
  * 校验码类型
  * 
- * @author zhailiang
+ * @author Gongdixin
  *
  */
 public enum ValidateCodeType {
