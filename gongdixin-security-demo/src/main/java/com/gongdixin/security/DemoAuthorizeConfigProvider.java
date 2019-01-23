@@ -14,6 +14,6 @@ import org.springframework.stereotype.Component;
 public class DemoAuthorizeConfigProvider implements AuthorizeConfigProvider {
     @Override
     public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
-        config.antMatchers("/demo.html").hasRole("ADMIN");
+        config.antMatchers("/user/register").permitAll().antMatchers("/demo.html").hasRole("ADMIN");
     }
 }
