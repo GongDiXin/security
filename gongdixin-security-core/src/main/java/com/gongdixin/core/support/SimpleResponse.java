@@ -1,4 +1,4 @@
-package com.gongdixin.security.browser.support;
+package com.gongdixin.core.support;
 
 /**
  * @author GongDiXin

@@ -2,6 +2,7 @@ package com.gongdixin.security.browser;
 
 import com.gongdixin.core.authentication.AbstractChannelSecurityConfig;
 import com.gongdixin.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.gongdixin.core.authorize.AuthorizeConfigManager;
 import com.gongdixin.core.properties.SecurityConstants;
 import com.gongdixin.core.properties.SecurityProperties;
 import com.gongdixin.core.validatecode.ValidateCodeSecurityConfig;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,11 +34,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -62,6 +59,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private LogoutSuccessHandler logoutSuccessHandler;
+
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
 
     /**
      * 配置数据源和token仓库
@@ -91,11 +91,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         // 表单登录 也可以设置成HttpBasic登录
         http.apply(validateCodeSecurityConfig).
                 and().
-            apply(smsCodeAuthenticationSecurityConfig).
+             apply(smsCodeAuthenticationSecurityConfig).
                 and().
-            apply(socialSecurityConfig).
+             apply(socialSecurityConfig).
                 and().
-            rememberMe().tokenRepository(persistentTokenRepository())
+             rememberMe().tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
                 .and()
@@ -108,29 +108,14 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .expiredSessionStrategy(sessionInformationExpiredStrategy)
                 .and()
                 .and()
-            .logout()
+             .logout()
                 .logoutUrl("/signOut")
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .deleteCookies("JSESSIONID")
                 .and()
-            // 授权
-            .authorizeRequests()
-            // 这个地方写文件的相对路径还不行
-            .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        securityProperties.getBrowser().getLoginPage(),
-                        "/user/register",
-                        SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL,
-                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        securityProperties.getBrowser().getSignOutUrl())
-                        .permitAll()
-            // 针对任何请求
-            .anyRequest()
-            // 认证 你是谁
-            .authenticated()
-            .and()
             // csrf跨站请求伪造
-            .csrf().disable();
+             .csrf().disable();
+
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 }

@@ -60,7 +60,7 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
             info = JSON.parseObject(ret, QQUserInfo.class);
             info.setOpenId(openId);
         } catch (Exception e) {
-            logger.error(String.format("getQQUserInfo result parse QQUserInfo error"));
+            logger.error(String.format("getQQUserInfo result parse QQUserInfo resources.error"));
         }
         return info;
     }

@@ -5,7 +5,7 @@ package com.gongdixin.security.browser.session;
 
 import com.alibaba.fastjson.JSON;
 import com.gongdixin.core.properties.SecurityProperties;
-import com.gongdixin.security.browser.support.SimpleResponse;
+import com.gongdixin.core.support.SimpleResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

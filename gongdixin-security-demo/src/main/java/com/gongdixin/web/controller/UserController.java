@@ -11,9 +11,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
@@ -55,7 +53,7 @@ public class UserController {
      * @return
      * @exception
     */
-    @GetMapping("/getCurrentUser")
+    @GetMapping("/me")
     public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails;
     }
@@ -168,7 +166,7 @@ public class UserController {
      * @description 测试跳转500界面
      * @throws
     */
-    @GetMapping("/error/{id:\\d+}")
+    @GetMapping("/resources/error/{id:\\d+}")
     public void getServerErrorView(@PathVariable String id){
         throw new UserNotExistException(id);
     }

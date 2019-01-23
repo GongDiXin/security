@@ -65,7 +65,7 @@ public class WeiXinImpl extends AbstractOAuth2ApiBinding implements WeiXin {
 		try {
 			profile = JSON.parseObject(response, WeiXinUserInfo.class);
 		} catch (Exception e) {
-			logger.error("WeiXinImpl getUserInfo error, response: " + response);
+			logger.error("WeiXinImpl getUserInfo resources.error, response: " + response);
 		}
 		return profile;
 	}

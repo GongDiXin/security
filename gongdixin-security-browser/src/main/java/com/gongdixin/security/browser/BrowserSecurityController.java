@@ -3,7 +3,7 @@ package com.gongdixin.security.browser;
 import com.alibaba.fastjson.JSON;
 import com.gongdixin.core.properties.SecurityConstants;
 import com.gongdixin.core.properties.SecurityProperties;
-import com.gongdixin.security.browser.support.SimpleResponse;
+import com.gongdixin.core.support.SimpleResponse;
 import com.gongdixin.security.browser.support.SocialUserInfo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;

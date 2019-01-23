@@ -18,6 +18,11 @@
             <artifactId>gongdixin-security-browser</artifactId>
             <version>${gongdixin.security.version}</version>
         </dependency>
+        <!--<dependency>
+            <groupId>com.gongdixin.security</groupId>
+            <artifactId>gongdixin-security-app</artifactId>
+            <version>${gongdixin.security.version}</version>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

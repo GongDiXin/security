@@ -25,7 +25,7 @@
   				request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));
   		response.setStatus(status.value());
   		ModelAndView modelAndView = resolveErrorView(request, response, status, model);
-  		return (modelAndView == null ? new ModelAndView("error", model) : modelAndView);
+  		return (modelAndView == null ? new ModelAndView("resources.error", model) : modelAndView);
   	}
 
 2.参考com/gongdixin/web/controller/ControllerExceptionHandler.java 注意该类的注解

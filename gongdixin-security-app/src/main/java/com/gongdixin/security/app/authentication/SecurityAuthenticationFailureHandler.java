@@ -1,4 +1,4 @@
-package com.gongdixin.security.browser.authentication;
+package com.gongdixin.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gongdixin.core.properties.LoginType;

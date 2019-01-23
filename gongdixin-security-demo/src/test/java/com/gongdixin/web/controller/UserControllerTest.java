@@ -89,7 +89,7 @@ public class UserControllerTest {
                         forwardFlag = true;
                     }
                 },
-                error : function () {
+                resources.error : function () {
                     $.messager.alert('alert','Username or password is incorrect!');
                     login.clearForm();
 

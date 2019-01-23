@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class AbstractChannelSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthenticationSuccessHandler successHandlerHandler;
+    private AuthenticationSuccessHandler successHandler;
 
     @Autowired
     private AuthenticationFailureHandler failureHandler;
@@ -24,7 +24,7 @@ public class AbstractChannelSecurityConfig extends WebSecurityConfigurerAdapter 
         http.formLogin()
             .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
             .loginProcessingUrl(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM)
-            .successHandler(successHandlerHandler)
+            .successHandler(successHandler)
             .failureHandler(failureHandler);
     }
 }
